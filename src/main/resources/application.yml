@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dbflute-test?useSSL=false&serverTimeZone=UTC
+    username: test
+    password: testpass
+    testOnBorrow: true
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      pool-name: ConnectionPool
+      leakDetectionThreshold: 5000
+      connection-test-query: SELECT 1
+      auto-commit: false
+      transaction-isolation: TRANSACTION_READ_COMMITTED
