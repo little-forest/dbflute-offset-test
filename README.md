@@ -15,7 +15,7 @@
 
 `member` テーブルから合計100件のレコードを取得するテスト。 PageSize を 31 にしているので、4ページに分割。
 
-### 通常のpaging
+### 1. 通常のpaging
 
 問題なし。
 
@@ -27,7 +27,7 @@ PageSize:  31, PageNum:   3, AllPageCount:   4, AllRecordCount:  100, FetchRecor
 PageSize:  31, PageNum:   4, AllPageCount:   4, AllRecordCount:  100, FetchRecords:   7
 ```
 
-### xfetchScope() を使用
+### 2. xfetchScope() を使用
 
 最後だけ AllRecordCount が 7 になってしまう。
 
@@ -39,9 +39,9 @@ PageSize:  31, Offset:  62, AllPageCount:   4, AllRecordCount:  100, FetchRecord
 PageSize:  31, Offset:  93, AllPageCount:   1, AllRecordCount:    7, FetchRecords:   7
 ```
 
-### xfetchScope() + disablePagingCountLater() を使用
+### 3. xfetchScope() + disablePagingCountLater() を使用
 
-正しく取得できる。
+AllRecordCount は正しく取得できるが、4回目の取得で `page.existsNextPage()` が `true` を返してしまい、5回ループしてしまう。
 
 ```
 testPageByOffset2 ====================================================================
@@ -51,3 +51,10 @@ PageSize:  31, Offset:  62, AllPageCount:   4, AllRecordCount:  100, FetchRecord
 PageSize:  31, Offset:  93, AllPageCount:   4, AllRecordCount:  100, FetchRecords:   7
 PageSize:  31, Offset: 100, AllPageCount:   4, AllRecordCount:  100, FetchRecords:   0
 ```
+
+## 調査
+
+### 2. について
+
+[PagingInvoker#deriveAllRecordCountByLastPage()](https://github.com/dbflute/dbflute-core/blob/21dc2fdcd77aa02cf3f595f2382ebf161fdbf87e/dbflute-runtime/src/main/java/org/dbflute/cbean/paging/PagingInvoker.java#L195-L197) で、 `pagingBean.getFetchPageNumber()` が 0 を返しているため、 `baseSize` が 0 になってしまうことが原因。
+
