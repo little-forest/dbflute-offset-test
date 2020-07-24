@@ -31,7 +31,7 @@ PageSize:  31, PageNum:   4, AllPageCount:   4, AllRecordCount:  100, FetchRecor
 
 ### 2. xfetchScope() を使用
 
-[テストコード](https://github.com/little-forest/dbflute-offset-test/blob/master/src/main/java/com/example/dbflutetest/DBFluteTest.java#L26-L41)
+[テストコード](https://github.com/little-forest/dbflute-offset-test/blob/master/src/main/java/com/example/dbflutetest/DBFluteTest.java#L43-L63)
 
 最後だけ AllRecordCount が 7 になってしまう。
 
@@ -45,7 +45,7 @@ PageSize:  31, Offset:  93, AllPageCount:   1, AllRecordCount:    7, FetchRecord
 
 ### 3. xfetchScope() + disablePagingCountLater() を使用
 
-[テストコード](https://github.com/little-forest/dbflute-offset-test/blob/master/src/main/java/com/example/dbflutetest/DBFluteTest.java#L26-L41)
+[テストコード](https://github.com/little-forest/dbflute-offset-test/blob/master/src/main/java/com/example/dbflutetest/DBFluteTest.java#L65-L86)
 
 AllRecordCount は正しく取得できるが、4回目の取得で `page.existsNextPage()` が `true` を返してしまい、5回ループしてしまう。
 
